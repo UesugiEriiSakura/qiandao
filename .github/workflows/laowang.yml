@@ -1,4 +1,4 @@
-name: Run soushuba qiandao
+name: Run laowang qiandao
 on:
   push:
   # Allows you to run this workflow manually from the Actions tab
@@ -10,9 +10,9 @@ jobs:
   run:
     runs-on: ubuntu-latest
     env:
-      SOUSHUBA_HOSTNAME: ${{ secrets.SOUSHUBA_HOSTNAME }}
-      SOUSHUBA_USERNAME: ${{ secrets.SOUSHUBA_USERNAME }}
-      SOUSHUBA_PASSWORD: ${{ secrets.SOUSHUBA_PASSWORD }}
+      LAOWANG_HOSTNAME: ${{ secrets.LAOWANG_HOSTNAME }}
+      LAOWANG_USERNAME: ${{ secrets.LAOWANG_USERNAME }}
+      LAOWANG_PASSWORD: ${{ secrets.LAOWANG_PASSWORD }}
 
     steps:
       - name: Check out repository code
@@ -23,4 +23,8 @@ jobs:
           python-version: '3.13'
           cache: 'pip'
       - run: pip install -r requirements.txt
-      - run: python soushuba.py
+      - name: Check Chrome version
+        run: |
+          google-chrome --version
+          which google-chrome
+      - run: python laowang.py

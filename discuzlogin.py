@@ -4,8 +4,8 @@ import requests
 
 class DiscuzLogin:
     proxies = {
-        'http': 'http://127.0.0.1:1080',
-        'https': 'https://127.0.0.1:1080'
+        'http': 'http://127.0.0.1:7890',
+        'https': 'http://127.0.0.1:7890'
     }
 
     def __init__(self, hostname, username, password, questionid='0', answer=None, proxies=None):
@@ -21,7 +21,7 @@ class DiscuzLogin:
     @classmethod
     def user_login(cls, hostname, username, password, questionid='0', answer=None, proxies=None):
         user = DiscuzLogin(hostname, username, password, questionid, answer, proxies)
-        user.login()
+        user.login()     
 
     def form_hash(self):
         rst = self.session.get(f'https://{self.hostname}/member.php?mod=logging&action=login').text
@@ -42,7 +42,9 @@ class DiscuzLogin:
             'answer': self.answer,
             'cookietime': 2592000
         }
+        print(form_data)
         login_rst = self.session.post(login_url, proxies=self.proxies, data=form_data)
+        print(login_rst.text)
         if self.session.cookies.get('xxzo_2132_auth'):
             print(f'Welcome {self.username}!')
         else:
