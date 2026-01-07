@@ -149,7 +149,7 @@ class LaoWangSign:
                     return False
 
             sign_button = page.ele(
-                'css:a.J_chkitot[href*="operation=qiandao"]', timeout=5
+                'css:a.J_chkitot[href*="operation=qiandao"]', timeout=10
             )
             if sign_button:
                 print("✅ 找到签到按钮")
