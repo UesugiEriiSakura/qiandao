@@ -178,6 +178,7 @@ class LaoWangSign:
                     print("✅ 已签到")
                     self.parse_person_info(page)
                 else:
+                    print(page.html)
                     print("❌ 未找到签到按钮")
             return False
         except Exception as e:
