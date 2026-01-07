@@ -1,6 +1,8 @@
 from asyncio.log import logger
 import base64
 import os
+# os.environ["QT_QPA_PLATFORM"] = "offscreen"
+# os.environ["DISPLAY"] = ":0.0"
 import random
 import re
 import sys
@@ -11,6 +13,7 @@ from PIL import Image
 from io import BytesIO
 import cv2
 import numpy as np
+from captcha_recognizer.slider import Slider
 
 # 缺口识别参数配置池
 # MATCH_STRATEGIES = [
@@ -247,6 +250,10 @@ class LaoWangSign:
                         # 计算缺口位置
                         # distance, confidence = self.get_gap_by_template_match("bg.png", "mark.png")
                         distance = self.get_gap_by_template_match("mark.png", "bg.png")
+                        # print("cv匹配完成， 接下来尝试大模型匹配")
+                        # box, confidence = Slider().identify(source=f'bg.png', show=True)
+                        # print(f'缺口坐标: {box}')
+                        # print('置信度', confidence)
 
                         print(f"已计算缺口位置{distance}")
                         print(f"📏 识别距离: {distance}")
