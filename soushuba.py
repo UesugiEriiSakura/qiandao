@@ -154,7 +154,7 @@ class SouShuBaClient:
             if re.search("操作成功", resp.text):
                 logger.info(f'{self.username} post {x + 1}nd successfully!')
                 # 等待一段时间 使用随机延迟， 从30到120秒
-                time.sleep(random.randint(30, 120))
+                time.sleep(random.randint(60, 120))
             else:
                 logger.warning(f'{self.username} post {x + 1}nd failed!')
 
