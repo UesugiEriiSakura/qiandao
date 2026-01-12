@@ -14,8 +14,8 @@ class Send:
         send_channel = channel or os.environ.get("SENDCHANNEL", "")
         if send_channel == Channel.bark:
             bark = Bark(
-                base_url=os.environ.get("BARKURL", "https://mq.12138.work/"),
-                device_key=os.environ.get("BARKKEY", "UoEfDEVWMzq7fAHXhkWjs4"),
+                base_url=os.environ.get("BARKURL", ""),
+                device_key=os.environ.get("BARKKEY", ""),
             )
             return bark.simple_push(content)
         else:
