@@ -3,6 +3,7 @@
 实现搜书吧论坛登入和发布空间动态
 """
 import os
+import random
 import re
 import sys
 from copy import copy
@@ -14,6 +15,8 @@ import xml.etree.ElementTree as ET
 import time
 import logging
 import urllib3
+
+from send import Send
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -43,9 +46,11 @@ def get_refresh_url(url: str):
                 return redirect_url
         else:
             logger.error("No meta refresh tag found.")
+            Send.send(f"未找到 meta refresh 标签.: {e}")
             return None
     except Exception as e:
         logger.exception(f'An unexpected error occurred: {e}')
+        Send.send(f'未知错误: {e}')
         return None
 
 def get_url(url: str):
@@ -107,6 +112,7 @@ class SouShuBaClient:
         if resp.status_code == 200:
             logger.info(f'Welcome {self.username}!')
         else:
+            Send.send(f'登录失败！检查你的用户名和密码！')
             raise ValueError('Verify Failed! Check your username and password!')
 
     def credit(self):
@@ -147,7 +153,8 @@ class SouShuBaClient:
             resp = self.session.post(space_url, proxies=self.proxies, data=payload, headers=headers, verify=False)
             if re.search("操作成功", resp.text):
                 logger.info(f'{self.username} post {x + 1}nd successfully!')
-                time.sleep(120)
+                # 等待一段时间 使用随机延迟， 从30到120秒
+                time.sleep(random.randint(30, 120))
             else:
                 logger.warning(f'{self.username} post {x + 1}nd failed!')
 
@@ -166,6 +173,7 @@ if __name__ == '__main__':
         client.space()
         credit = client.credit()
         logger.info(f'{client.username} have {credit} coins!')
+        Send.send(f'{client.username} 拥有 {credit} 银币!')
     except Exception as e:
         logger.error(e)
         sys.exit(1)

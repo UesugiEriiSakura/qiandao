@@ -14,6 +14,8 @@ import cv2
 import numpy as np
 from captcha_recognizer.slider import Slider
 
+from send import Send
+
 
 class LaoWangSign:
     proxies = {"http": "http://127.0.0.1:7890", "https": "http://127.0.0.1:7890"}
@@ -117,6 +119,7 @@ class LaoWangSign:
                         time.sleep(5)
                 else:
                     print("❌ 登录失败")
+                    Send.send("登录失败")
                     return False
 
             sign_button = page.ele(
@@ -139,10 +142,11 @@ class LaoWangSign:
                             self.parse_person_info(page)
                         else:
                             print("❌ 签到失败！")
-                        time.sleep(20)
+                            Send.send("签到失败， 未找到签到成功标志")
                         return True
                     else:
                         print("❌ 没有找到提交按钮")
+                        Send.send("未知异常, 没有找到提交按钮")
             else:
                 time.sleep(5)
                 if '<span class="btn btnvisted"></span>' in page.html:
@@ -151,9 +155,11 @@ class LaoWangSign:
                 else:
                     print(page.html)
                     print("❌ 未找到签到按钮")
+                    Send.send("未知异常, 未找到签到按钮")
             return False
         except Exception as e:
             print(f"验证码识别失败: {e}")
+            Send.send(f"验证码识别失败: {e}")
             return False
         finally:
             if "page" in locals():
@@ -380,6 +386,7 @@ class LaoWangSign:
 
                 print(f"🔰 用户组: {group_name}")
                 print(f"📝 详细Tip: {group_tip}")
+        Send.send(f"✅ 签到成功\n💰 软妹币: {rmb_count}\n🔰 用户组: {group_name}\n📝 Tips: {group_tip}")
 
     def login(self, page: ChromiumPage) -> bool:
         # 清除所有Cookie
@@ -460,7 +467,7 @@ if __name__ == "__main__":
             laowang_username,
             laowang_password,
             laowang_cookie,
-            matching_method = matching_method,
+            matching_method=matching_method,
         )
 
     except Exception as e:
