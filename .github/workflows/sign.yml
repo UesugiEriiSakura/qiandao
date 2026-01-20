@@ -17,6 +17,7 @@ jobs:
       LAOWANG_USERNAME: ${{ secrets.LAOWANG_USERNAME }}
       LAOWANG_PASSWORD: ${{ secrets.LAOWANG_PASSWORD }}
       LAOWANG_COOKIE: ${{ secrets.LAOWANG_COOKIE }}
+      SENDCHANNEL: ${{ secrets.SENDCHANNEL }}
 
     steps:
       - name: Check out repository code
@@ -31,7 +32,7 @@ jobs:
         run: |
           google-chrome --version
           which google-chrome
-      # - name: Run soushuba.py
-      #   continue-on-error: true
-      #   run: python soushuba.py
+      - name: Run soushuba.py
+        continue-on-error: true
+        run: python soushuba.py
       - run: python laowang.py
