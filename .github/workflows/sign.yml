@@ -31,5 +31,7 @@ jobs:
         run: |
           google-chrome --version
           which google-chrome
-      - run: python soushuba.py
+      # - name: Run soushuba.py
+      #   continue-on-error: true
+      #   run: python soushuba.py
       - run: python laowang.py

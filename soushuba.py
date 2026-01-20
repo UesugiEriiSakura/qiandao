@@ -176,4 +176,5 @@ if __name__ == '__main__':
         Send.send(f'{client.username} 拥有 {credit} 银币!')
     except Exception as e:
         logger.error(e)
+        Send.send(f'连接错误：无法连接到服务器，请检查网络或服务器状态！')
         sys.exit(1)

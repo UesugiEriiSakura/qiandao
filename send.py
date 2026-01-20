@@ -14,9 +14,11 @@ class Send:
         # 检查是否显式传递了channel参数
         if channel is not None:
             send_channel = channel
+            print("显式传递了channel参数:", send_channel)
         else:
             # 否则使用环境变量
             send_channel = os.environ.get("SENDCHANNEL", "")
+            print("环境变量中获取了channel参数:", send_channel)
 
         if send_channel == Channel.bark:
             bark = Bark(
