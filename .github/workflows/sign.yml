@@ -17,6 +17,8 @@ jobs:
       LAOWANG_USERNAME: ${{ secrets.LAOWANG_USERNAME }}
       LAOWANG_PASSWORD: ${{ secrets.LAOWANG_PASSWORD }}
       LAOWANG_COOKIE: ${{ secrets.LAOWANG_COOKIE }}
+      BARKURL: ${{ secrets.BARKURL }}
+      BARKKEY: ${{ secrets.BARKKEY }}
       SENDCHANNEL: ${{ secrets.SENDCHANNEL }}
 
     steps:
