@@ -94,8 +94,8 @@ class LaoWangSign:
             co.set_proxy("http://127.0.0.1:7890")
         co.set_argument("--disable-gpu")  # 禁用 GPU（服务器通常没有）
         co.set_argument("--disable-dev-shm-usage")  # 解决共享内存不足崩溃
-        # co.headless(True)
-        # co.set_argument("--headless=new")
+        co.headless(True)
+        co.set_argument("--headless=new")
         co.set_argument("--no-sandbox")  # 解决 root 用户运行崩溃
         # co.set_argument('--window-size=1920,1080')
         # 设置 User-Agent
