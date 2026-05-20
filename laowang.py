@@ -63,6 +63,22 @@ class LaoWangSign:
 
         return user
 
+    def handle_language_popup(self, page: ChromiumPage):
+        """检查并处理语言选择弹窗"""
+        try:
+            # 检查是否存在语言选择按钮
+            lang_btn = page.ele("text:简体中文（繁转简）", timeout=2)
+            if lang_btn:
+                print("🌐 发现语言选择弹窗，点击 '简体中文（繁转简）'...")
+                lang_btn.click()
+                print("⏳ 等待页面重新加载...")
+                page.wait.load_start()
+                time.sleep(2)
+                return True
+        except Exception as e:
+            print(f"⚠️ 处理语言弹窗时出错: {e}")
+        return False
+
     def check_verity_code(self):
         # # 使用DrissionPage访问页面
         # 配置选项
@@ -74,11 +90,12 @@ class LaoWangSign:
             or os.getenv("TRAVIS") == "true"
         )
         if not is_ci:
+            print("设置网络代理.")
             co.set_proxy("http://127.0.0.1:7890")
         co.set_argument("--disable-gpu")  # 禁用 GPU（服务器通常没有）
         co.set_argument("--disable-dev-shm-usage")  # 解决共享内存不足崩溃
-        co.headless(True)
-        co.set_argument("--headless=new")
+        # co.headless(True)
+        # co.set_argument("--headless=new")
         co.set_argument("--no-sandbox")  # 解决 root 用户运行崩溃
         # co.set_argument('--window-size=1920,1080')
         # 设置 User-Agent
@@ -94,6 +111,7 @@ class LaoWangSign:
             page.get(f"https://{self.hostname}/plugin.php?id=k_misign:sign")
 
             page.wait.load_start()
+            self.handle_language_popup(page)
 
             # 检查是否还在验证页
             if (
@@ -122,6 +140,7 @@ class LaoWangSign:
                     Send.send("登录失败")
                     return False
 
+            self.handle_language_popup(page)
             sign_button = page.ele(
                 'css:a.J_chkitot[href*="operation=qiandao"]', timeout=10
             )
@@ -132,6 +151,7 @@ class LaoWangSign:
                 time.sleep(2)
                 result = self.click_tncode(page)
                 if result:
+                    self.handle_language_popup(page)
                     if page.wait.ele_displayed("#submit-btn", timeout=5):
                         submit = page.ele("#submit-btn", timeout=10)
                         print("👆 提交表单...")
@@ -167,6 +187,7 @@ class LaoWangSign:
 
     def click_tncode(self, page: ChromiumPage) -> bool:
         # 点击验证按钮
+        self.handle_language_popup(page)
         if page.wait.ele_displayed("#tncode", timeout=15):
             print("✅ 找到验证按钮")
             btn = page.ele("#tncode", timeout=10)
@@ -396,6 +417,7 @@ class LaoWangSign:
         page.get(login_url)
 
         page.wait.load_start()
+        self.handle_language_popup(page)
 
         print(page.title)
 
