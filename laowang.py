@@ -261,7 +261,7 @@ class LaoWangSign:
                             print("✅ 验证通过！")
                             return True
                         else:
-                            if retry and self.retry_count <= 5:
+                            if retry and self.retry_count <= 10:
                                 print("❌ 验证失败，重新验证...")
                                 tncode_refresh = page.ele(".tncode_refresh", timeout=10)
                                 tncode_refresh.click()

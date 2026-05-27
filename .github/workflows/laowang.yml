@@ -1,18 +1,14 @@
-name: Run sign
+name: Run LAOWANG Sign
 on:
   push:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   schedule:
-    - cron: '42 23 * * *'
+    - cron: '15 0 * * *'
 
 jobs:
   run:
     runs-on: ubuntu-latest
     env:
-      SOUSHUBA_HOSTNAME: ${{ secrets.SOUSHUBA_HOSTNAME }}
-      SOUSHUBA_USERNAME: ${{ secrets.SOUSHUBA_USERNAME }}
-      SOUSHUBA_PASSWORD: ${{ secrets.SOUSHUBA_PASSWORD }}
       LAOWANG_HOSTNAME: ${{ secrets.LAOWANG_HOSTNAME }}
       LAOWANG_USERNAME: ${{ secrets.LAOWANG_USERNAME }}
       LAOWANG_PASSWORD: ${{ secrets.LAOWANG_PASSWORD }}
@@ -30,11 +26,5 @@ jobs:
           python-version: '3.13'
           cache: 'pip'
       - run: pip install -r requirements.txt
-      - name: Check Chrome version
-        run: |
-          google-chrome --version
-          which google-chrome
-      - name: Run soushuba.py
-        continue-on-error: true
-        run: python soushuba.py
-      - run: python laowang.py
+      - name: Run laowang.py
+        run: python laowang.py

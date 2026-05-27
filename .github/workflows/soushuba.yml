@@ -1,0 +1,33 @@
+name: Run SOUSHUBA Sign
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '42 23 * * *'
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      SOUSHUBA_HOSTNAME: ${{ secrets.SOUSHUBA_HOSTNAME }}
+      SOUSHUBA_USERNAME: ${{ secrets.SOUSHUBA_USERNAME }}
+      SOUSHUBA_PASSWORD: ${{ secrets.SOUSHUBA_PASSWORD }}
+      BARKURL: ${{ secrets.BARKURL }}
+      BARKKEY: ${{ secrets.BARKKEY }}
+      SENDCHANNEL: ${{ secrets.SENDCHANNEL }}
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+      - name: Check Chrome version
+        run: |
+          google-chrome --version
+          which google-chrome
+      - name: Run soushuba.py
+        run: python soushuba.py
